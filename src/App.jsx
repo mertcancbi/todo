@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import TaskInput from "./components/TaskInput";
 import TaskItem from './components/TaskItem';
+import Stats from './components/Stats';
 
 function App() {
   const [toDoList, setToDoList] = useState([]);
@@ -12,6 +13,14 @@ function App() {
 
   function deletTask(deletTaskName){
     setToDoList(toDoList.filter((task) => task.taskName !== deletTaskName));
+  }
+
+  function toggleCheck(taskName) {
+    setToDoList((prevToDoList) => prevToDoList.map
+    (task => task.taskName === taskName ? { ...task,
+    checked: !task.checked } : task, 
+    )
+    );
   }
 
   console.log(toDoList);
@@ -26,13 +35,14 @@ function App() {
             <span>To do</span>
             <ul className="list-items">
             {toDoList.map((task, key) => (
-              <TaskItem task={task} key={key} deletTask={deletTask} />
+              <TaskItem task={task} key={key} deletTask={deletTask} toggleCheck={toggleCheck} />
             ))}
             </ul>
 
             {toDoList.length ===0 ? ( <p className='notify'>You Are Done</p> ) : null }
           </div>
       </div>
+      <Stats toDoList={toDoList} />
     </>
   );
 }
